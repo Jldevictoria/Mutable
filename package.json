@@ -13,6 +13,7 @@
     "start": "node ./mutable.js"
   },
   "dependencies": {
+    "body-parser": "1.15.2",
     "express": "~4.13.4",
     "express-handlebars": "~3.0.0",
     "stylus": "~0.54.5",

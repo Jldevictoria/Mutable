@@ -3,27 +3,29 @@
 // Date:        Sep_30_2016
 // Purpose:     Main Express file for Mutable. Mutable is a job board for programmers.
 // Includes:
+var bodyParser  = require('body-parser');
 var express     = require('express');
+var handlebars  = require('express-handlebars');
+var http        = require('http');
 var sqlite3     = require('sqlite3').verbose();
 var path        = require('path');
-var http        = require('http');
-var handlebars  = require('express-handlebars');
 
 // Application Setup:
 var app = express();
+// Set up external router file.
 require('./router/main')(app);
-app.set('db', __dirname + '/db');
-app.set('private', __dirname + '/private');
-app.set('public', __dirname + '/public');
-app.set('router', __dirname + '/router');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.set('port', 80);
-app.use(express.static(app.get('public', {dotfiles: 'ignore', etag: false, extensions: ['html'], index: false})));
+// Set the public folder as static and viewable by anyone.
+app.use(express.static('public'));
+// Enable Body-parser for all requests.
+app.use(bodyParser.json());
+// Set handlebars as our template engine.
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 
-// Databse Setup:
-var db = new sqlite3.Database((app.get('db') + 'mutable.db'), function() {
+// Open database:
+var db = new sqlite3.Database('./db/mutable.db', function() {
     console.log('Successfully opened mutable.db!');
 });
 
