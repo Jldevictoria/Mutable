@@ -22,7 +22,7 @@ app.use(express.static('public'));
 // Enable Body-parser for all requests.
 app.use(bodyParser.json());
 // Set handlebars as our template engine.
-app.engine('handlebars', handlebars({defaultLayout: 'main'}));
+app.engine('handlebars', handlebars({defaultLayout: 'default'}));
 
 // Open database:
 var db = new sqlite3.Database('./db/mutable.db', function() {
