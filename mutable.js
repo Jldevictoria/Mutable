@@ -13,8 +13,6 @@ var path        = require('path');
 // Application Setup:
 var app = express();
 app.set('port', 80);
-// Set up external router file.
-require('./router/main')(app);
 // Set handlebars as our template engine.
 app.engine('handlebars', handlebars());
 app.set('views', __dirname + '/views');
@@ -22,7 +20,10 @@ app.set('view engine', 'handlebars');
 // Set the public folder as static and viewable by anyone.
 app.use(express.static('public'));
 // Enable Body-parser for all requests.
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+// Set up external router file.
+require('./router/main')(app);
 
 // Open database:
 var db = new sqlite3.Database('./db/mutable.db', function() {

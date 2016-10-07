@@ -5,6 +5,7 @@
 
 // Web App Path Requests:
 module.exports = function(app) {
+    // Get Handlers
     app.get('/', function(req, res) {
         res.render('main'); //, {key: "value"});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Home page!');
@@ -17,17 +18,17 @@ module.exports = function(app) {
     
     app.get('/job/:id', function(req, res) {
         res.render('job', {id: req.params.id});
-        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the ' + req.params.id + ' Job page!');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Job page for job ' + req.params.id);
     });
     
-    app.get('/apply', function(req, res) {
-        res.render('apply');
-        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Apply page!');
+    app.get('/apply/:id', function(req, res) {
+        res.render('apply', {id: req.params.id});
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Application page for job ' + req.params.id);
     });
     
-    app.get('/challenge', function(req, res) {
-        res.render('challenge');
-        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Challenge page!');
+    app.get('/challenge/:id', function(req, res) {
+        res.render('challenge', {id: req.params.id});
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Challenge page for job ' + req.params.id);
     });
     app.get('/applications', function(req, res) {
         res.render('applications');
@@ -42,5 +43,11 @@ module.exports = function(app) {
     app.get('/about', function(req, res) {
         res.render('about');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the About page!');
+    });
+
+    // Post handlers.
+    app.post('/challenge/save/:id', function(req, res) {
+        res.render('save', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save page for job ' + req.params.id);
     });
 }

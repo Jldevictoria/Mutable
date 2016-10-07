@@ -21,6 +21,17 @@
             <a href="https://www.mutable.cc/applications" class="button">Applications</a>
             <a href="https://www.mutable.cc/profile" class="button">Profile</a>
         </div>
+        <div class="container payload">
+            I was passed the document with the following information:<br>
+            <b>{{fileName}}</b><br>
+            <div class="container">
+                <pre>
+                {{#each fileContent}}
+                    {{this}}<br>
+                {{/each}}
+                </pre>
+            </div>
+        </div>
         <div class="container navbar">
             <a href="https://www.mutable.cc/about" class="button">About</a>
         </div">
