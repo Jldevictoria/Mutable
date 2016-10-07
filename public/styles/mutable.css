@@ -1,9 +1,8 @@
 /* Filename:    mutable.css
  * Author:      Joseph DeVictoria (Dave Gamache) 
  * Date:        Oct_4_2016
- * Purpose:     The boilerplate stylesheet for Mutable.
- * Notes:       Influenced by Skeleton, thus MIT license.
-*/
+ * Purpose:     The boilerplate stylesheet for Mutable. */
+
 
 /* Base Styles -------------------------------- */
 html { font-size: 62.5%; }
@@ -11,6 +10,7 @@ body {
     font-size: 1.5rem; /* ~15px */
     line-height: 1.6;
     font-weight: 400;
+    background-color: #3b3b3b;
     font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -39,16 +39,23 @@ hr {
 a { color: #1EAEDB; }
 a:hover { color: #0FA0CE; }
 
-/* Images ------------------------------------- */
-.logo {
-    width: 50px; 
-    height: 50px; 
-    margin-right: 1rem; 
-    padding-top: 5px; 
-    padding-left: 5px; 
-    padding-right: 5px; 
-    padding-bottom: 5px;
+
+/* Code --------------------------------------- */
+code {
+    padding: .2rem .5rem;
+    margin: 0 .2rem;
+    font-size: 90%;
+    white-space: nowrap;
+    background: #F1F1F1;
+    border: 1px solid #E1E1E1;
+    border-radius: 4px; 
 }
+pre > code {
+    display: block;
+    padding: 1rem 1.5rem;
+    white-space: pre; 
+}
+
 
 /* Layout ------------------------------------- */
 .navbar {
@@ -59,6 +66,32 @@ a:hover { color: #0FA0CE; }
     display: flex;
     justify-content: center;
     margin-top: 1rem;
+}
+
+
+/* Text Editor -------------------------------- */
+.challenge-editor {
+    height: 800px;
+    width: 100%;
+    border: 1px solid #87b235;
+    border-radius: 4px;
+    border-bottom-right-radius: 0px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+
+/* Images ------------------------------------- */
+.logo {
+    width: 50px; 
+    height: 50px; 
+    margin-right: 1rem; 
+    padding-top: 5px; 
+    padding-left: 5px; 
+    padding-right: 5px; 
+    padding-bottom: 5px;
 }
 
 
@@ -85,10 +118,7 @@ a:hover { color: #0FA0CE; }
 
 /* Buttons ------------------------------------ */
 .button,
-button,
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
+button {
     display: inline-block;
     height: 38px;
     padding: 0 30px;
@@ -112,24 +142,15 @@ input[type="button"] {
 
 .button:hover,
 button:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover,
-input[type="button"]:hover,
 .button:focus,
-button:focus,
-input[type="submit"]:focus,
-input[type="reset"]:focus,
-input[type="button"]:focus {
+button:focus {
     color: #ffffff;
     border-color: #ffffff;
     outline: 0; 
 }
 
 .button.button-primary,
-button.button-primary,
-input[type="submit"].button-primary,
-input[type="reset"].button-primary,
-input[type="button"].button-primary {
+button.button-primary {
     color: #000000;
     background-color: #87b235;
     border-color: #000000; 
@@ -137,14 +158,8 @@ input[type="button"].button-primary {
 
 .button.button-primary:hover,
 button.button-primary:hover,
-input[type="submit"].button-primary:hover,
-input[type="reset"].button-primary:hover,
-input[type="button"].button-primary:hover,
 .button.button-primary:focus,
-button.button-primary:focus,
-input[type="submit"].button-primary:focus,
-input[type="reset"].button-primary:focus,
-input[type="button"].button-primary:focus {
+button.button-primary:focus {
     color: #ffffff;
     background-color: #87b235;
     border-color: #ffffff; 
@@ -152,36 +167,16 @@ input[type="button"].button-primary:focus {
 
 
 /* Forms -------------------------------------- */
-input[type="email"],
-input[type="number"],
-input[type="search"],
-input[type="text"],
-input[type="tel"],
-input[type="url"],
-input[type="password"],
+input,
 textarea,
 select {
     height: 38px;
     padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
-    background-color: #fff;
-    border: 1px solid #D1D1D1;
+    background-color: #3b3b3b;
+    border: 1px solid #9bcc3d;
     border-radius: 4px;
     box-shadow: none;
-    box-sizing: border-box; 
-}
-
-/* Removes awkward default styles on some inputs for iOS */
-input[type="email"],
-input[type="number"],
-input[type="search"],
-input[type="text"],
-input[type="tel"],
-input[type="url"],
-input[type="password"],
-textarea {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none; 
+    box-sizing: border-box;
 }
 
 textarea {
@@ -189,38 +184,31 @@ textarea {
     padding-top: 6px;
     padding-bottom: 6px; 
 }
-input[type="email"]:focus,
-input[type="number"]:focus,
-input[type="search"]:focus,
-input[type="text"]:focus,
-input[type="tel"]:focus,
-input[type="url"]:focus,
-input[type="password"]:focus,
+
+input:focus,
 textarea:focus,
 select:focus {
-    border: 1px solid #33C3F0;
+    border: 1px solid #93cc2a;
     outline: 0; 
 }
+
 label,
 legend {
     display: block;
     margin-bottom: .5rem;
     font-weight: 600; 
 }
+
 fieldset {
     padding: 0;
     border-width: 0; 
 }
-input[type="checkbox"],
-input[type="radio"] {
-    display: inline; 
-}
-label > .label-body {
-    display: inline-block;
-    margin-left: .5rem;
-    font-weight: normal; 
-}
 
+form {
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
 
 /* Lists -------------------------------------- */
 ul {
@@ -245,23 +233,6 @@ li {
 }
 
 
-/* Code --------------------------------------- */
-code {
-    padding: .2rem .5rem;
-    margin: 0 .2rem;
-    font-size: 90%;
-    white-space: nowrap;
-    background: #F1F1F1;
-    border: 1px solid #E1E1E1;
-    border-radius: 4px; 
-}
-pre > code {
-    display: block;
-    padding: 1rem 1.5rem;
-    white-space: pre; 
-}
-
-
 /* Tables ------------------------------------- */
 th,
 td {
@@ -276,52 +247,4 @@ td:first-child {
 th:last-child,
 td:last-child {
     padding-right: 0; 
-}
-
-
-/* Spacing ------------------------------------ */
-input,
-textarea,
-select,
-fieldset {
-    margin-bottom: 1.5rem; 
-}
-
-pre,
-blockquote,
-dl,
-figure,
-table,
-p,
-ul,
-ol,
-form {
-    margin-bottom: 2.5rem; 
-}
-
-
-/* Utilities ---------------------------------- */
-.u-full-width {
-    width: 100%;
-    box-sizing: border-box; 
-}
-.u-max-full-width {
-    max-width: 100%;
-    box-sizing: border-box; 
-}
-.u-pull-right {
-    float: right; 
-}
-.u-pull-left {
-    float: left; 
-}
-
-
-/* Clearing ----------------------------------- */
-.container:after,
-.row:after,
-.u-cf {
-    content: "";
-    display: table;
-    clear: both; 
 }
