@@ -39,6 +39,21 @@ module.exports = function(app) {
         res.render('profile');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Profile page!');
     });
+
+    app.get('/login', function(req, res) {
+        res.render('login');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Login page!');
+    });
+
+    app.get('/register', function(req, res) {
+        res.render('register');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Registration page!');
+    });
+
+    app.get('/logout', function(req, res) {
+        res.render('logout');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Logout page!');
+    });
     
     app.get('/about', function(req, res) {
         res.render('about');
@@ -49,5 +64,20 @@ module.exports = function(app) {
     app.post('/challenge/save/:id', function(req, res) {
         res.render('save', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save page for job ' + req.params.id);
+    });
+    
+    // Errorr handlers
+    app.use(function(req, res) {
+        res.status(404);
+        res.render('404', {page: req.originalUrl});
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' generated a 404 error requesting "' + req.originalUrl + '"!');
+    });
+
+    app.use(function(error, req, res, next) {
+        if (error.status == 500) {
+            res.status(500);
+            res.render('505');
+            console.log('User at ' + req.headers['x-forwarded-for'] + ' generated a 500 error requesting "' + req.originalUrl + '"!');
+        }
     });
 }
