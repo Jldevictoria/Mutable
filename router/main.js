@@ -65,6 +65,21 @@ module.exports = function(app) {
         res.render('save', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save page for job ' + req.params.id);
     });
+
+    app.post('/login', function(req, res) {
+        res.render('login');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Login page! (Login attempt)');
+    });
+
+    app.post('/register', function(req, res) {
+        res.render('register');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Register page!');
+    });
+
+    app.post('/logout', function(req, res) {
+        res.render('logout');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Logout page! (logged out)');
+    });
     
     // Errorr handlers
     app.use(function(req, res) {
