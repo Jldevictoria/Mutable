@@ -4,7 +4,7 @@
 // Purpose:     Main router for Mutable on express.
 
 // Web App Path Requests:
-module.exports = function(app) {
+module.exports = function(app, bcrypt, db) {
     // Get Handlers
     app.get('/', function(req, res) {
         res.render('main'); //, {key: "value"});
@@ -41,12 +41,12 @@ module.exports = function(app) {
     });
 
     app.get('/login', function(req, res) {
-        res.render('login');
+        res.render('login', { loggedout: true });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Login page!');
     });
 
     app.get('/register', function(req, res) {
-        res.render('register');
+        res.render('register', { get: true });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Registration page!');
     });
 
@@ -67,16 +67,46 @@ module.exports = function(app) {
     });
 
     app.post('/login', function(req, res) {
-        res.render('login');
+        res.render('login', { loggedin: true });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Login page! (Login attempt)');
     });
 
     app.post('/register', function(req, res) {
-        res.render('register');
+        var username = req.body.registration_username;
+        var email = req.body.registration_email;
+        var employer = 0;
+        var companyname = "none";
+        var firstname = "none";
+        var lastname = "none";
+        if (req.body.registration_employer == "Yes") {
+            employer = 1;
+            companyname = req.body.registration_companyname;
+        }
+        else {
+            firstname = req.body.registration_firstname;
+            lastname = req.body.registration_lastname;
+        }
+        var salt = bcrypt.genSaltSync(10);
+        var key = bcrypt.hashSync(req.body.registration_password_first, salt);
+        var query = "INSERT INTO accounts (active, username, email, employer, companyname, firstname, lastname, salt, key) " +
+                    "VALUES (0, '" + username + "', '" + email + "', " + employer + ", '" + companyname + "', '" + 
+                    firstname + "', '" + lastname + "', '" + salt + "', '" + key + "');";
+        console.log(query);
+        db.get("SELECT * FROM accounts WHERE username = '" + username + "' OR email = '"  + email + "';", function(err, row) {
+            if (row) {
+                res.render('register', { get: true, exists: true });
+            }    
+            else {
+                db.run(query);
+                res.render('register', { post: true });
+            }
+        }); 
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Register page!');
     });
 
     app.post('/logout', function(req, res) {
+        console.log(req.body.login_username);
+        console.log(req.body.login_password);
         res.render('logout');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Logout page! (logged out)');
     });

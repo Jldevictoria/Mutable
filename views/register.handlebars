@@ -21,17 +21,50 @@
             <a href="https://www.mutable.cc/profile" class="button">Profile</a>
         </div>
         <div class="container payload">
+            {{#if get}}
             <form name="registration" method="post" action="/register" role="form">
-                <label for="registration_username">Username</label>(3+ alphanumeric characters):
-                <div><input type="text" id="registration_username" name="registration_username" required="required" maxlength="30" pattern="[A-Za-z0-9]{3,}"></div>
-                <label for="registration_email">Email</label>
-                <div><input type="email" id="registration_email" name="registration_email" required="required"></div>
-                <label for="registration_password_first">Password</label>
-                <div><input type="password" id="registration_password_first" name="registration_password_first" required="required" maxlength="30" pattern="[A-Za-z0-9]{6,}"></div>
-                <label for="registration_password_second">Confirm Password</label>
-                <div><input type="password" id="registration_password_second" name="registration_password_second" required="required" maxlength="30" pattern="[A-Za-z0-9]{6,}"></div>
+                <div>
+                    <label for="registration_username">Username</label>
+                    <input type="text" id="registration_username" name="registration_username" required="required" maxlength="30" pattern="[A-Za-z0-9]{3,}">
+                </div>
+                <div>
+                    <label for="registration_email">Email</label>
+                    <input type="email" id="registration_email" name="registration_email" required="required">
+                </div>
+                <div>
+                    <label for="registration_employer">Are you an employer?</label>
+                    <input type="radio" id="registration_employer" name="registration_employer" value="No" checked>No
+                    <input type="radio" id="registration_employer" name="registration_employer" value="Yes">Yes
+                </div>
+                <div>
+                    <label for="registration_companyname">Company Name</label>
+                    <input type="text" id="registration_companyname" name="registration_companyname">
+                </div>
+                <div>
+                    <label for="registration_firstname">First Name</label>
+                    <input type="text" id="registration_firstname" name="registration_firstname" required="required">
+                </div>
+                <div>
+                    <label for="registration_lastname">Last Name</label>
+                    <input type="text" id="registration_lastname" name="registration_lastname" required="required">
+                </div>
+                <div>
+                    <label for="registration_password_first">Password</label>
+                    <input type="password" id="registration_password_first" name="registration_password_first" required="required" maxlength="30" pattern="[A-Za-z0-9]{6,}">
+                </div>
+                <div>
+                    <label for="registration_password_second">Confirm Password</label>
+                    <input type="password" id="registration_password_second" name="registration_password_second" required="required" maxlength="30" pattern="[A-Za-z0-9]{6,}">
+                </div>
                 <input type="submit" value="Register" />
             </form>
+            {{/if}}
+            {{#if post}}
+            <h1>Registration submitted, please check your email to complete verification!</h1>
+            {{/if}}
+            {{#if exists}}
+            <h1>An account for this username or email already exists!</h1>
+            {{/if}}
         </div>
         <div class="container navbar">
             <a href="https://www.mutable.cc/about" class="button">About</a>

@@ -8,6 +8,7 @@ var express     = require('express');
 var handlebars  = require('express-handlebars');
 var http        = require('http');
 var sqlite3     = require('sqlite3').verbose();
+var bcrypt      = require('bcrypt');
 var path        = require('path');
 
 // Application Setup:
@@ -22,8 +23,6 @@ app.use(express.static('public'));
 // Enable Body-parser for all requests.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// Set up external router file.
-require('./router/main')(app);
 
 // Open database:
 var db = new sqlite3.Database('./db/mutable.db', function() {
@@ -34,3 +33,6 @@ var db = new sqlite3.Database('./db/mutable.db', function() {
 var server = app.listen(app.get('port'), function() {
     console.log('Listening on port ' + app.get('port') + '...');
 });
+
+// Set up external router file.
+require('./router/main')(app, bcrypt, db);

@@ -21,6 +21,7 @@
             <a href="https://www.mutable.cc/profile" class="button">Profile</a>
         </div>
         <div class="container payload">
+            {{#if loggedout}}
             <form name="login" method="post" action="/login" role="form">
                 <label for="login_username">Username</label>
                 <div><input type="text" id="login_username" name="login_username" required="required" maxlength="30" pattern="[A-Za-z0-9]{3,}"></div>
@@ -28,6 +29,10 @@
                 <div><input type="password" id="login_password" name="login_password" required="required" maxlength="30" pattern="[A-Za-z0-9]{6,}"></div>
                 <input type="submit" value="Login" />
             </form>
+            {{/if}}
+            {{#if loggedin}}
+            <h1>You are logged in!</h1>
+            {{/if}}
         </div>
         <div class="container navbar">
             <a href="https://www.mutable.cc/about" class="button">About</a>
