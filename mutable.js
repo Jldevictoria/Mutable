@@ -3,13 +3,14 @@
 // Date:        Sep_30_2016
 // Purpose:     Main Express file for Mutable. Mutable is a job board for programmers.
 // Includes:
+var bcrypt      = require('bcrypt');
 var bodyParser  = require('body-parser');
 var express     = require('express');
 var handlebars  = require('express-handlebars');
 var http        = require('http');
-var sqlite3     = require('sqlite3').verbose();
-var bcrypt      = require('bcrypt');
+var mailer      = require('nodemailer');
 var path        = require('path');
+var sqlite3     = require('sqlite3').verbose();
 
 // Application Setup:
 var app = express();
@@ -34,5 +35,7 @@ var server = app.listen(app.get('port'), function() {
     console.log('Listening on port ' + app.get('port') + '...');
 });
 
+var emailer = mailer.createTransport('smtps://mutablejobs%40gmail.com:MutG0blin@smtp.gmail.com');
+
 // Set up external router file.
-require('./router/main')(app, bcrypt, db);
+require('./router/main')(app, bcrypt, db, emailer);
