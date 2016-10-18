@@ -8,8 +8,8 @@ DROP TABLE IF EXISTS challengeresponses;
 CREATE TABLE accounts (
     id integer not null primary key autoincrement,
     active integer not null,
-    username text not null unique,
-    email text not null unique,
+    username text not null unique collate nocase,
+    email text not null unique collate nocase,
     employer integer not null,
     companyname text not null,
     firstname text not null,

@@ -21,6 +21,9 @@
             <a href="https://www.mutable.cc/profile" class="button">Profile</a>
         </div>
         <div class="container payload">
+            {{#if incorrect}}
+            <h1>Your username or password was incorrect...</h1>
+            {{/if}}
             {{#if loggedout}}
             <form name="login" method="post" action="/login" role="form">
                 <label for="login_username">Username</label>

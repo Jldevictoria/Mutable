@@ -84,13 +84,27 @@ module.exports = function(app, bcrypt, db, emailer) {
     });
 
     app.post('/login', function(req, res) {
-        res.render('login', { loggedin: true });
+        db.get("SELECT * FROM accounts WHERE username = '" + req.body.login_username + "';", function(err, row) {
+            if (row) {
+                var key = bcrypt.hashSync(req.body.login_password, row.salt);
+                if (key == row.key) {
+                    console.log("User " + row.username + " supplied the correct password for login!");
+                    res.render('login', { loggedin: true });
+                }
+                else {
+                    console.log("User " + row.username + " supplied an incorrect password for login!");
+                    res.render('login', { loggedout: true, incorrect: true });
+                }
+            }
+            else {
+                console.log("User " + req.body.login_username + " not found for login...");
+                res.render('login', { loggedout: true, incorrect: true });
+            }
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Login page! (Login attempt)');
     });
 
     app.post('/logout', function(req, res) {
-        console.log(req.body.login_username);
-        console.log(req.body.login_password);
         res.render('logout');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Logout page! (logged out)');
     });

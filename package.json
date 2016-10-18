@@ -13,13 +13,13 @@
     "start": "node ./mutable.js"
   },
   "dependencies": {
-    "bcrypt": "~0.8.7",
-    "body-parser": "~1.15.2",
-    "cookie-parser": "~1.4.3",
-    "express": "~4.13.4",
-    "express-session": "~1.12.1",
-    "express-handlebars": "~3.0.0",
-    "nodemailer": "2.6.2",
-    "sqlite3": "~3.1.4"
+    "bcrypt": "latest",
+    "body-parser": "latest",
+    "cookie-parser": "latest",
+    "express": "latest",
+    "express-session": "latest",
+    "express-handlebars": "latest",
+    "nodemailer": "latest",
+    "sqlite3": "latest"
   }
 }
