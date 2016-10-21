@@ -35,6 +35,11 @@ module.exports = function(app, bcrypt, db, emailer) {
         res.render('jobs', {id: "1337"});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Jobs page!');
     });
+
+    app.get('/jobs/create', function(req, res) {
+        res.render('createjobpost');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Job Creation page!');
+    });
     
     app.get('/job/:id', function(req, res) {
         res.render('job', {id: req.params.id});
@@ -79,8 +84,13 @@ module.exports = function(app, bcrypt, db, emailer) {
 
     // Post handlers.
     app.post('/challenge/save/:id', function(req, res) {
-        res.render('save', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
-        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save page for job ' + req.params.id);
+        res.render('savechallenge', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save Challenge page for job ' + req.params.id);
+    });
+
+    app.post('/jobs/create/save', function(req, res) {
+        res.render('savejobpost');
+        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save Job page.');
     });
 
     app.post('/login', function(req, res) {

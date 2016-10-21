@@ -24,10 +24,7 @@
             I was passed the document with the following information:<br>
             <b>{{fileName}}</b><br>
             <div class="container">
-                <pre>
-                {{#each fileContent}}
-                    {{this}}<br>
-                {{/each}}
+                <pre>{{#each fileContent}}{{this}}<br>{{/each}}
                 </pre>
             </div>
         </div>
