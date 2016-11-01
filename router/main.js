@@ -89,7 +89,13 @@ module.exports = function(app, bcrypt, db, emailer) {
     });
 
     app.post('/jobs/create/save', function(req, res) {
-        res.render('savejobpost');
+        var skillStep = 0;
+        while (skillStep <= req.body.jobSkillCounter) {
+            skillList.push("skill_"+skillStep+": "+req.body.getElementById("skill_"+skillStep));
+            skillStep++;   
+        }
+        res.render('savejobpost', {jobTitle: req.body.jobTitle, jobLocation: req.body.jobLocation, jobDescription: req.body.jobDescription, 
+                                   jobExperienceLevel: req.body.jobExperienceLevel, jobSalary: req.body.jobSalary, skills: skillList});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save Job page.');
     });
 
