@@ -5,64 +5,105 @@
 
 // Web App Path Requests:
 module.exports = function(app, bcrypt, db, emailer) {
+    // Common Functions
+    function checkSession(session_id) {
+        if (session_id == undefined) {
+            return false;
+        }
+        else {
+            db.get("SELECT * FROM accounts WHERE session = '" + session_id + "';", function(err, row) {
+                if (row) {
+                    return row;                 
+                }
+                else {
+                    return false;
+                }
+            });
+        }
+    }
     // Get Handlers
     app.get('/', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('main'); //, {key: "value"});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Home page!');
     });
     
     app.get('/about', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('about');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the About page!');
     });
     
     app.get('/applications', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('applications');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Applications page!');
     });
     
     app.get('/apply/:id', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('apply', {id: req.params.id});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Application page for job ' + req.params.id);
     });
     
     app.get('/challenge/:id', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('challenge', {id: req.params.id});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Challenge page for job ' + req.params.id);
     });
     
     app.get('/jobs', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('jobs', {id: "1337"});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Jobs page!');
     });
 
     app.get('/jobs/create', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('createjobpost');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Job Creation page!');
     });
     
     app.get('/job/:id', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('job', {id: req.params.id});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Job page for job ' + req.params.id);
     });
 
     app.get('/login', function(req, res) {
-        res.render('login', { loggedout: true });
+        var user = checkSession(req.cookies.session_id);
+        if (user == false) {
+            res.render('login', { loggedout: true });
+        }
+        else {
+            res.render('login', { loggedin: true });
+        }
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Login page!');
     });
 
     app.get('/logout', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
+        if (user != false) {
+            db.run("UPDATE accounts SET session = 'null' WHERE username = '" + user.username + "';");
+        }
         res.render('logout');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Logout page!');
     });
     
     app.get('/profile', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('profile');
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Profile page!');
     });
 
     app.get('/register', function(req, res) {
-        res.render('register', { get: true });
+        var user = checkSession(req.cookies.session_id);
+        if (user == false) {
+            res.render('register', { get: true });
+        }
+        else {
+            res.render('login', { loggedin: true });
+        }
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Registration page!');
     });
 
@@ -84,11 +125,13 @@ module.exports = function(app, bcrypt, db, emailer) {
 
     // Post handlers.
     app.post('/challenge/save/:id', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         res.render('savechallenge', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save Challenge page for job ' + req.params.id);
     });
 
     app.post('/jobs/create/save', function(req, res) {
+        var user = checkSession(req.cookies.session_id);
         var skillStep = 0;
         while (skillStep <= req.body.jobSkillCounter) {
             skillList.push("skill_"+skillStep+": "+req.body.getElementById("skill_"+skillStep));
@@ -105,6 +148,9 @@ module.exports = function(app, bcrypt, db, emailer) {
                 var key = bcrypt.hashSync(req.body.login_password, row.salt);
                 if (key == row.key) {
                     console.log("User " + row.username + " supplied the correct password for login!");
+                    var sid = bcrypt.genSaltSync(1);
+                    db.run("UPDATE accounts SET session = '" + sid + "' WHERE username = '" + req.body.login_username +"';")
+                    res.cookie('session_id', sid, {maxAge : 9999});
                     res.render('login', { loggedin: true });
                 }
                 else {
@@ -141,6 +187,7 @@ module.exports = function(app, bcrypt, db, emailer) {
             lastname = req.body.registration_lastname;
         }
         var salt = bcrypt.genSaltSync(10);
+        console.log(salt);
         var key = bcrypt.hashSync(req.body.registration_password_first, salt);
         var query = "INSERT INTO accounts (active, username, email, employer, companyname, firstname, lastname, salt, key) " +
                     "VALUES (0, '" + username + "', '" + email + "', " + employer + ", '" + companyname + "', '" + 

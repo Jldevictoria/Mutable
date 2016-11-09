@@ -15,7 +15,8 @@ CREATE TABLE accounts (
     firstname text not null,
     lastname text not null,
     salt text not null unique,
-    key text not null
+    key text not null,
+    session text
     --creationdate numeric not null
 );
 CREATE TABLE jobs (
