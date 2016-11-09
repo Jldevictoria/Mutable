@@ -150,7 +150,7 @@ module.exports = function(app, bcrypt, db, emailer) {
                     console.log("User " + row.username + " supplied the correct password for login!");
                     var sid = bcrypt.genSaltSync(1);
                     db.run("UPDATE accounts SET session = '" + sid + "' WHERE username = '" + req.body.login_username +"';")
-                    res.cookie('session_id', sid, {maxAge : 9999});
+                    res.cookie('session_id', sid, {maxAge : 86400000});
                     res.render('login', { loggedin: true });
                 }
                 else {
