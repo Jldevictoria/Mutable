@@ -22,6 +22,11 @@
                 customPost("/challenge/save/{{id}}", doc);
             }
         </script>
+        <script>
+            function switchToC() {
+                editor.getSession().setMode("/ace/mode/c_cpp");
+            }
+        </script>
     </head>
     <body>
         <div class="container navbar">
@@ -33,7 +38,7 @@
         <div class="container">
             <p>Welcome to the {{id}} challenge.</p>
             File name: <input type="text" name="fileName" id="fileName" value="{{id}}.js">
-            <div class="challenge-editor" id="editor">
+            <span><div class="challenge-editor" id="editor">
                 <script src="https://www.mutable.cc/scripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
                 <script>
                     var editor = ace.edit("editor"); 
@@ -41,7 +46,8 @@
                     editor.setTheme("ace/theme/idle_fingers");
                     editor.getSession().setMode("/ace/mode/javascript");
                 </script>
-            </div>
+            </div></span>
+            <input id="c" type="button" value="Go C" onClick="switchToC();">
             <input id="save" type="button" value="Save" onClick="saveDocument();">
         </div>
         <div class="container navbar">
