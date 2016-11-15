@@ -21,8 +21,13 @@
             <a href="https://www.mutable.cc/profile" class="button">Profile</a>
         </div>
         <div class ="container payload">
+            {{#if loggedout}}  
             <a href="https://www.mutable.cc/login" class="button">Login</a>
             <a href="https://www.mutable.cc/register" class="button">Register</a>
+            {{/if}}
+            {{#if loggedin}}
+                {{username}} 
+            {{/if}}
         </div>
         <div class="container navbar">
             <a href="https://www.mutable.cc/about" class="button">About</a>

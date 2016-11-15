@@ -5,105 +5,126 @@
 
 // Web App Path Requests:
 module.exports = function(app, bcrypt, db, emailer) {
-    // Common Functions
-    function checkSession(session_id) {
-        if (session_id == undefined) {
-            return false;
-        }
-        else {
-            db.get("SELECT * FROM accounts WHERE session = '" + session_id + "';", function(err, row) {
-                if (row) {
-                    return row;                 
-                }
-                else {
-                    return false;
-                }
-            });
-        }
-    }
-    // Get Handlers
+
+    // Get Handlers and Callbacks
     app.get('/', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('main'); //, {key: "value"});
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {
+            }
+            else {
+            }
+            res.render('main');
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Home page!');
     });
-    
+
     app.get('/about', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('about');
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('about');
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the About page!');
     });
     
     app.get('/applications', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('applications');
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('applications');
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Applications page!');
     });
     
     app.get('/apply/:id', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('apply', {id: req.params.id});
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('apply', {id: req.params.id});
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Application page for job ' + req.params.id);
     });
     
     app.get('/challenge/:id', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('challenge', {id: req.params.id});
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('challenge', {id: req.params.id});
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Challenge page for job ' + req.params.id);
     });
     
     app.get('/jobs', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('jobs', {id: "1337"});
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('jobs', {id: "1337"});
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Jobs page!');
     });
 
     app.get('/jobs/create', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('createjobpost');
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('createjobpost');
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Job Creation page!');
     });
     
     app.get('/job/:id', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('job', {id: req.params.id});
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('job', {id: req.params.id});
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Job page for job ' + req.params.id);
     });
 
     app.get('/login', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        if (user == false) {
-            res.render('login', { loggedout: true });
-        }
-        else {
-            res.render('login', { loggedin: true });
-        }
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {
+                res.render('login', { loggedin: true });
+            }
+            else {
+                res.render('login', { loggedout: true });
+            }
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Login page!');
     });
 
     app.get('/logout', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        if (user != false) {
-            db.run("UPDATE accounts SET session = 'null' WHERE username = '" + user.username + "';");
-        }
-        res.render('logout');
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {
+                db.run("UPDATE accounts SET session = 'null' WHERE username = '" + row.username + "';");
+            }
+            else {}
+            res.render('logout');
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Logout page!');
     });
     
     app.get('/profile', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('profile');
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {
+                res.render('profile', { loggedin: true, username: row.username });
+            }
+            else {
+                res.render('profile', { loggedout: true });
+            }
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Profile page!');
     });
 
     app.get('/register', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        if (user == false) {
-            res.render('register', { get: true });
-        }
-        else {
-            res.render('login', { loggedin: true });
-        }
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {
+                res.render('login', { loggedin: true });
+            }
+            else {
+                res.render('register', { get: true });
+            }
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' requested the Registration page!');
     });
 
@@ -111,10 +132,9 @@ module.exports = function(app, bcrypt, db, emailer) {
         var salt = req.params.salt;
         db.get("SELECT * FROM accounts WHERE salt = '" + salt + "';", function(err, row) {
             if (row) {
-                var username = row.username;
                 db.run("UPDATE accounts SET active = 1 WHERE salt = '" + salt + "';");
-                res.render('verify', { flag: true, user: username });
-                console.log('User at ' + req.headers['x-forwarded-for'] + ' successfully verified the account "' + username + '"!');
+                res.render('verify', { flag: true, user: row.username });
+                console.log('User at ' + req.headers['x-forwarded-for'] + ' successfully verified the account "' + row.username + '"!');
             }
             else {
                 res.render('verify', { flag: false });
@@ -125,20 +145,26 @@ module.exports = function(app, bcrypt, db, emailer) {
 
     // Post handlers.
     app.post('/challenge/save/:id', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        res.render('savechallenge', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            res.render('savechallenge', {fileName: req.body.fileName, fileContent: JSON.parse(req.body.fileContent)});
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save Challenge page for job ' + req.params.id);
     });
 
     app.post('/jobs/create/save', function(req, res) {
-        var user = checkSession(req.cookies.session_id);
-        var skillStep = 0;
-        while (skillStep <= req.body.jobSkillCounter) {
-            skillList.push("skill_"+skillStep+": "+req.body.getElementById("skill_"+skillStep));
-            skillStep++;   
-        }
-        res.render('savejobpost', {jobTitle: req.body.jobTitle, jobLocation: req.body.jobLocation, jobDescription: req.body.jobDescription, 
-                                   jobExperienceLevel: req.body.jobExperienceLevel, jobSalary: req.body.jobSalary, skills: skillList});
+        db.get("SELECT * FROM accounts WHERE session = '" + req.cookies.session_id + "';", function(err, row) {
+            if (row) {}
+            else {}
+            var skillStep = 0;
+            while (skillStep <= req.body.jobSkillCounter) {
+                skillList.push("skill_"+skillStep+": "+req.body.getElementById("skill_"+skillStep));
+                skillStep++;   
+            }
+            res.render('savejobpost', {jobTitle: req.body.jobTitle, jobLocation: req.body.jobLocation, jobDescription: req.body.jobDescription, 
+                                       jobExperienceLevel: req.body.jobExperienceLevel, jobSalary: req.body.jobSalary, skills: skillList});
+        });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Save Job page.');
     });
 
@@ -164,11 +190,6 @@ module.exports = function(app, bcrypt, db, emailer) {
             }
         });
         console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Login page! (Login attempt)');
-    });
-
-    app.post('/logout', function(req, res) {
-        res.render('logout');
-        console.log('User at ' + req.headers['x-forwarded-for'] + ' posted data to the Logout page! (logged out)');
     });
 
     app.post('/register', function(req, res) {
